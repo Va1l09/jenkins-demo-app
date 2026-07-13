@@ -100,39 +100,25 @@ pipeline {
 
         failure {
             echo 'El pipeline falló. Revisa los logs de la etapa correspondiente.'
+
+            emailext(
+                to: 'lknowsvl@gmail.com',
+                subject: "Build fallido: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                    El pipeline falló.
+
+                    Proyecto: ${env.JOB_NAME}
+                    Build: #${env.BUILD_NUMBER}
+                    Entorno: ${params.ENTORNO}
+
+                    Revisa la consola:
+                    ${env.BUILD_URL}
+                """
+            )
         }
 
         always {
             echo "Build #${env.BUILD_NUMBER} finalizado."
         }
     }
-
-    post {
-    success {
-        echo "Pipeline completado correctamente para ${env.APP_NAME}"
-    }
-
-    failure {
-        echo 'El pipeline falló. Revisa los logs de la etapa correspondiente.'
-
-        emailext(
-            to: 'lknowsvl@gmail.com',
-            subject: "Build fallido: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-            body: """
-                El pipeline falló.
-
-                Proyecto: ${env.JOB_NAME}
-                Build: #${env.BUILD_NUMBER}
-                Entorno: ${params.ENTORNO}
-
-                Revisa la consola:
-                ${env.BUILD_URL}
-            """
-        )
-    }
-
-    always {
-        echo "Build #${env.BUILD_NUMBER} finalizado."
-    }
-}
 }
