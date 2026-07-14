@@ -59,7 +59,7 @@ pipeline {
                     docker run --rm \
                     -v ${JENKINS_VOLUME}:/var/jenkins_home \
                     -w ${PROJECT_PATH} \
-                    ${NODE_IMAGE} npm prueba
+                    ${NODE_IMAGE} npm test
                 '''
             }
         }
